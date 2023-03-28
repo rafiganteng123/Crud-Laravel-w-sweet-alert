@@ -10,19 +10,29 @@
         </div>
 
     @if ($errors->any())
-        <div class="alert alert-secondary">
-            <strong>Yahh</strong> Data Barang Tidak Terinput<br><br>
-                <strong>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </strong>
-        </div>
+        <script>
+            Swal.fire({
+                title: '<strong>Yahh</strong> Data Barang Tidak Terinput<br><br>',
+                icon: 'info',
+                html: `
+                    <strong>
+                        <ul style="list-style-type:none;padding-left:0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </strong>
+                `,
+                showCloseButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    '<i class="fa fa-thumbs-up"></i> Kembali ',
+                confirmButtonAriaLabel: 'Thumbs up, great!',
+            })
+        </script>
     @endif
 
-    <form action="{{ route('product.store') }}" method="post">
+    <form action="{{ route('product.store') }}" id="form-tambah" method="post">
     @csrf
 
         <div class="card-body">
@@ -65,7 +75,7 @@
                     </div>
                 </div>
                 <div class="float-start mb-3">
-                    <button type="submit" class="btn btn-primary" onclick="createConfirmation( $product->request )">Tambah Data</button>
+                    <button type="button" class="btn btn-primary" onclick="CreateConfirmation()">Tambah Data</button>
                 </div>
                 <div class="float-end mb-3">
                     <a href="{{ route('product.index') }}" class="btn btn-secondary">Kembali</a>
@@ -74,3 +84,38 @@
     </form>
 
 @endsection
+
+<script>
+    function CreateConfirmation() {
+        const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-success m-3',
+        cancelButton: 'btn btn-danger'
+    },
+    buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+    title: 'Yakin Menambah Data?',
+    text: "Data Barang Akan Muncul Di Tabel",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Tambah',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true
+    }).then((result) => {
+    if (result.isConfirmed) {
+        document.getElementById('form-tambah').submit();
+    } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+    ) {
+        swalWithBootstrapButtons.fire(
+        'Cancelled',
+        'Your imaginary file is safe :)',
+        'error'
+        )
+    }
+    })
+    }
+</script>

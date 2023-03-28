@@ -11,10 +11,13 @@
     </div>
 
     @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-dismissible fade-show" role="alert">
-            <p>{{ $message }}</p>
-            <button type="button" class="btn btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <script>
+            Swal.fire(
+                'Berhasil',
+                '{{ $message }}',
+                'success'
+            )
+        </script>
     @endif
 
     <table class="table table-bordered">
