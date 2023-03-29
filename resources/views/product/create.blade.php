@@ -111,8 +111,8 @@
         result.dismiss === Swal.DismissReason.cancel
     ) {
         swalWithBootstrapButtons.fire(
-        'Cancelled',
-        'Your imaginary file is safe :)',
+        'Dibatalkan',
+        'Data Barang Aman :)',
         'error'
         )
     }
